@@ -21,29 +21,29 @@
             <div class="row justify-content-center">
                 <div class="col-sm">
                     <label asp-for="Nome" class="control-label"></label>
-                    <input asp-for="Nome" class="form-control" />
+                    <input asp-for="Nome" class="form-control" placeholder="Nome" />
                     <span asp-validation-for="Nome" class="text-danger"></span>
                 </div>
                 <div class="col-sm-3">
                     <label asp-for="DataNascimento" class="control-label"></label>
-                    <input asp-for="DataNascimento" class="form-control" />
+                    <input id="DataNascimento" asp-for="DataNascimento" class="form-control" placeholder="dd/mm/aaaa" />
                     <span asp-validation-for="DataNascimento" class="text-danger"></span>
                 </div>
                 <div class="col-sm-3">
                     <label asp-for="CPF" class="control-label"></label>
-                    <input asp-for="CPF" class="form-control" />
+                    <input id="CPF" asp-for="CPF" class="form-control" placeholder="Ex: 000.000.000-00" />
                     <span asp-validation-for="CPF" class="text-danger"></span>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-sm">
                     <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control" placeholder="Ex: teste@teste.com" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="col-sm-3">
                     <label asp-for="Celular" class="control-label"></label>
-                    <input asp-for="Celular" class="form-control" />
+                    <input id="Celular" asp-for="Celular" class="form-control" placeholder="Ex: (00) 0 0000 0000" />
                     <span asp-validation-for="Celular" class="text-danger"></span>
                 </div>
                 <div class="col-sm-3">
@@ -59,29 +59,29 @@
             <div class="row justify-content-center">
                 <div class="col-sm-4">
                     <label asp-for="CEP" class="control-label"></label>
-                    <input asp-for="CEP" class="form-control" />
+                    <input id="CEP" asp-for="CEP" class="form-control" placeholder="Ex: 00000-000" />
                     <span asp-validation-for="CEP" class="text-danger"></span>
                 </div>
                 <div class="col-sm-4">
                     <label asp-for="Rua" class="control-label"></label>
-                    <input asp-for="Rua" class="form-control" />
+                    <input asp-for="Rua" class="form-control" placeholder="Rua/Avenida" />
                     <span asp-validation-for="Rua" class="text-danger"></span>
                 </div>
                 <div class="col-sm-4">
                     <label asp-for="Complemento" class="control-label"></label>
-                    <input asp-for="Complemento" class="form-control" />
+                    <input asp-for="Complemento" class="form-control" placeholder="Complemento (Opcional)" />
                     <span asp-validation-for="Complemento" class="text-danger"></span>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-sm-4">
                     <label asp-for="Bairro" class="control-label"></label>
-                    <input asp-for="Bairro" class="form-control" />
+                    <input asp-for="Bairro" class="form-control" placeholder="Bairro" />
                     <span asp-validation-for="Bairro" class="text-danger"></span>
                 </div>
                 <div class="col-sm-4">
                     <label asp-for="Cidade" class="control-label"></label>
-                    <input asp-for="Cidade" class="form-control" />
+                    <input asp-for="Cidade" class="form-control" placeholder="Cidade" />
                     <span asp-validation-for="Cidade" class="text-danger"></span>
                 </div>
                 <div class="col-sm-2">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-sm-2">
                     <label asp-for="Numero" class="control-label"></label>
-                    <input asp-for="Numero" class="form-control" />
+                    <input asp-for="Numero" class="form-control" placeholder="Ex:1234" />
                     <span asp-validation-for="Numero" class="text-danger"></span>
                 </div>
             </div>
@@ -103,24 +103,36 @@
 
             <div class="col-lg">
                 <label asp-for="Assunto" class="control-label"></label>
-                <input asp-for="Assunto" class="form-control" />
+                <input asp-for="Assunto" class="form-control" placeholder="Título da Mensagem" />
                 <span asp-validation-for="Assunto" class="text-danger"></span>
             </div>
             <div class="col-lg">
                 <label asp-for="Mensagem" class="control-label"></label>
-                <input asp-for="Mensagem" class="form-control" />
+                <textarea asp-for="Mensagem" class="form-control" placeholder="Mensagem"></textarea>
                 <span asp-validation-for="Mensagem" class="text-danger"></span>
             </div>
 
             <hr />
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Enviar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section scripts
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $("#CPF").mask('000.000.000-00');
+            $("#DataNascimento").mask('00/00/0000');
+            $("#Celular").mask('(00) 0 0000-0000');
+            $("#CEP").mask('00000-000');
+        });
+    </script>
 }
+@*@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous">
+    }*@

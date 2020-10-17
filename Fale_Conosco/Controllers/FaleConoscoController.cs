@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Fale_Conosco.Enums;
 using Fale_Conosco.ViewModel;
 using System.ComponentModel;
+using System.Net.Mail;
 
 namespace Fale_Conosco.Controllers
 {
@@ -135,7 +136,7 @@ namespace Fale_Conosco.Controllers
                 {
                     _context.Add(faleconoscoM);
                     await _context.SaveChangesAsync();
-                    return View("Create","FaleConosco");
+                    return RedirectToAction ("Create","FaleConosco");
                 }
             }
             return View(faleConosco);
@@ -200,9 +201,69 @@ namespace Fale_Conosco.Controllers
             return RedirectToAction("Create", "FaleConosco");
         }
 
-        public async Task<IActionResult> Resposta(FaleConoscoVM DadosVM)
+        //GET: FaleConosco/Email
+        public async Task<IActionResult> Email(FaleConoscoVM DadosVM)
         {
-            return View();
+            if (DadosVM.Id != null)
+            {
+                var email = await _context.FaleConosco.FindAsync(DadosVM.Id);
+
+                if (email != null)
+                {
+                    var emailVM = new SMTPVM();
+                    emailVM.Id = email.Id;
+                    emailVM.Destinatario = email.Email;
+                    emailVM.Assunto = email.Assunto;
+                    //emailVM.Mensagem = "";
+                    return View(emailVM);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        //POST: FaleConosco/Email   
+        [HttpPost]
+        public IActionResult Email(SMTPVM DadosVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var dados = new SMTP();
+                dados.Destinatario = DadosVM.Destinatario;
+                dados.Assunto = DadosVM.Assunto;
+                dados.Mensagem = DadosVM.Mensagem;
+
+                MailMessage email = new MailMessage();
+                email.To.Add(dados.Destinatario);
+                email.Subject = dados.Assunto;
+                email.Body = dados.Mensagem;
+                email.From = new MailAddress("faleconosco1996@gamil.com");
+                email.IsBodyHtml = false;
+
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = true;
+                smtpClient.EnableSsl = true;
+                smtpClient.Credentials = new System.Net.NetworkCredential("faleconosco1996@gmail.com","Teste@123");
+                smtpClient.Send(email);
+
+                _context.SMTP.Add(dados);
+                _context.SaveChangesAsync();
+
+                ViewBag.email = "Resposta para, "+email.To+ ", enviada com sucesso!";
+                
+                return RedirectToAction("Index", "FaleConosco");
+             }
+            else
+            {
+                return NotFound();
+            }
         }
         private bool FaleConoscoExists(int id)
         {

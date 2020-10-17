@@ -12,5 +12,6 @@ namespace Fale_Conosco.Data
     {
         public ContextoFC(DbContextOptions<ContextoFC> options) : base(options) { }
         public DbSet<Fale_Conosco.Models.FaleConosco> FaleConosco { get; set; }
+        public DbSet<Fale_Conosco.Models.SMTP> SMTP { get; set; }
     }
 }

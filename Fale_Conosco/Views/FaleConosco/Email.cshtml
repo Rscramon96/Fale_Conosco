@@ -1,0 +1,43 @@
+﻿@model Fale_Conosco.ViewModel.SMTPVM
+
+@{
+    ViewData["Title"] = "Resposta";
+}
+
+<h1>Resposta</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Email">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-lg-12">
+                <label asp-for="Destinatario" class="control-label"></label>
+                <input asp-for="Destinatario" class="form-control" />
+                <span asp-validation-for="Destinatario" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="col-lg-12">
+                <label asp-for="Assunto" class="control-label"></label>
+                <input asp-for="Assunto" class="form-control" />
+                <span asp-validation-for="Assunto" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="col-lg">
+                <label asp-for="Mensagem" class="control-label"></label>
+                <textarea asp-for="Mensagem" class="form-control" ></textarea>
+                <span asp-validation-for="Mensagem" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="Enviar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar para lista</a>
+            </div>
+            <h5>@ViewBag.email</h5>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

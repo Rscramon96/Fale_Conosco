@@ -4,14 +4,16 @@ using Fale_Conosco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fale_Conosco.Migrations
 {
     [DbContext(typeof(ContextoFC))]
-    partial class ContextoFCModelSnapshot : ModelSnapshot
+    [Migration("20201017230646_AdcionandoSMTP")]
+    partial class AdcionandoSMTP
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
