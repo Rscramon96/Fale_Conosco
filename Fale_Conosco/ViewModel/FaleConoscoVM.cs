@@ -38,7 +38,7 @@ namespace Fale_Conosco.ViewModel
         public string Email { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
-        [StringLength(12, MinimumLength = 12, ErrorMessage ="O número de {0} deve conter 12 caracteres.")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage ="O número de {0} deve conter 11 caracteres.")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
