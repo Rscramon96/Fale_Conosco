@@ -117,22 +117,55 @@
             <div class="form-group">
                 <input type="submit" value="Enviar" class="btn btn-primary" />
             </div>
+            <h5>@ViewBag.cadastro</h5>
         </form>
     </div>
 </div>
 
 @section scripts
-{
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8">
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script type="text/javascript">
         $(document).ready(function () {
-            $("#CPF").mask('000.000.000-00');
+            $("#CPF").mask('000.000.000-00'), { reverse: true };
             $("#DataNascimento").mask('00/00/0000');
             $("#Celular").mask('(00) 0 0000-0000');
             $("#CEP").mask('00000-000');
         });
     </script>
+    <script>
+        $("#CPF").focusout(function () {
+            var cpf = $("#CPF").unmask().val();
+            $("#CPF").mask('000.000.000-00', { reverse: true });
+
+            if (!TestaCPF(cpf)) { $("CPF").focus(); }
+        });
+        function TestaCPF(strCPF) {
+            var Soma;
+            var Resto;
+            Soma = 0;
+            if (strCPF == "00000000000" || strCPF == "11111111111" || strCPF == "22222222222" || strCPF == "33333333333" || strCPF == "44444444444" || strCPF == "55555555555" || strCPF == "66666666666" || strCPF == "77777777777" || strCPF == "88888888888" || strCPF == "99999999999") {
+                $("#CPF").val("");
+                return false;
+            }
+            for (i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+            Resto = (Soma * 10) % 11;
+
+            if ((Resto == 10) || (Resto == 11)) Resto = 0;
+            if (Resto != parseInt(strCPF.substring(9, 10))) {
+                $("#CPF").val("");
+                return false;
+            }
+            Soma = 0;
+            for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+            Resto = (Soma * 10) % 11;
+
+            if ((Resto == 10) || (Resto == 11)) Resto = 0;
+            if (Resto != parseInt(strCPF.substring(10, 11))) {
+                $("#CPF").val("");
+                return false;
+            }
+            return true;
+        }
+    </script>
 }
-@*@section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous">
-    }*@
