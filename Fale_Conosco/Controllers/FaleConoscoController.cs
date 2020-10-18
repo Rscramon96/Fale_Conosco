@@ -139,7 +139,7 @@ namespace Fale_Conosco.Controllers
                     email.To.Add(faleconoscoM.Email);
                     email.Subject = "[FALE-CONOSCO]: " + faleconoscoM.Assunto;
                     email.Body = "Olá " + faleconoscoM.Nome + ", você acaba de nos enviar um formulário de fale conosco. Aqui está a mensagem que você nos deixou! \n\n"
-                       +""+ faleconoscoM.Mensagem + "'";
+                       + "" + faleconoscoM.Mensagem + "'";
                     email.From = new MailAddress("faleconosco1996@gmail.com");
                     email.IsBodyHtml = false;
 
@@ -155,6 +155,11 @@ namespace Fale_Conosco.Controllers
                     return RedirectToAction("Create", "FaleConosco");
                 }
             }
+            var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
+            ViewBag.Estado = new SelectList(Estados, "Id", "Nome");
+
+            var Sexo = from Sexo x in Enum.GetValues(typeof(Sexo)) select new { Id = x, Nome = x.ToString() };
+            ViewBag.Sexo = new SelectList(Sexo, "Id", "Nome");
             return View(faleConosco);
         }
 
@@ -214,7 +219,7 @@ namespace Fale_Conosco.Controllers
                 _context.FaleConosco.Update(faleConosco);
                 await _context.SaveChangesAsync();
 
-                ViewBag.excluir = faleConosco.Assunto+" excluído com sucesso!";
+                ViewBag.excluir = faleConosco.Assunto + " excluído com sucesso!";
 
                 return RedirectToAction("Index", "FaleConosco");
             }
@@ -280,14 +285,14 @@ namespace Fale_Conosco.Controllers
                 smtpClient.Send(email);
 
                 _context.SMTP.Add(dados);
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 //ViewBag.email = "Resposta para, " + email.To + ", enviada com sucesso!";
                 return RedirectToAction("Index", "FaleConosco");
             }
             else
             {
-                return NotFound();
+                return View(DadosVM);
             }
         }
         private bool FaleConoscoExists(int id)

@@ -10,14 +10,14 @@ namespace Fale_Conosco.ViewModel
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="O campo {0} é obrigatório!")]
         [Display(Name ="Destinatário")]
         public string Destinatario { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
         public string Assunto { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
         public string Mensagem { get; set; }
     }
 }
