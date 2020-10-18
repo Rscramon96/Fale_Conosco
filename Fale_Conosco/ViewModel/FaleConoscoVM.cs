@@ -25,11 +25,11 @@ namespace Fale_Conosco.ViewModel
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
         [Display(Name = "Data de Nascimento")]
-        [StringLength(8, MinimumLength = 8, ErrorMessage ="O campo {0} deve conter 8 caracteres.")]
+        //[StringLength(8, MinimumLength = 8, ErrorMessage ="O campo {0} deve conter 8 caracteres.")]
         public string DataNascimento { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage ="Insira um CPF válido.")]
+        //[StringLength(11, MinimumLength = 11, ErrorMessage ="Insira um CPF válido.")]
         public string CPF { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
@@ -38,14 +38,14 @@ namespace Fale_Conosco.ViewModel
         public string Email { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage ="O número de {0} deve conter 11 caracteres.")]
+        //[StringLength(11, MinimumLength = 11, ErrorMessage ="O número de {0} deve conter 11 caracteres.")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
         public Sexo Sexo { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
-        [StringLength(8, MinimumLength = 8, ErrorMessage ="O campo {0} deve conter 8 dígitos.")]
+        //[StringLength(8, MinimumLength = 8, ErrorMessage ="O campo {0} deve conter 8 dígitos.")]
         public string CEP { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]

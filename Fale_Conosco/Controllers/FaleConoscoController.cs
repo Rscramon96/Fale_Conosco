@@ -42,9 +42,7 @@ namespace Fale_Conosco.Controllers
                 faleConoscoVM.Assunto = item.Assunto;
                 lista.Add(faleConoscoVM);
             }
-
             return View(lista);
-            //return View(await _context.FaleConosco.Where(x => !x.Excluir).ToListAsync());
         }
 
         // GET: FaleConosco/Details/5
@@ -140,9 +138,9 @@ namespace Fale_Conosco.Controllers
                     MailMessage email = new MailMessage();
                     email.To.Add(faleconoscoM.Email);
                     email.Subject = "[FALE-CONOSCO]: " + faleconoscoM.Assunto;
-                    email.Body = "Olá " + faleconoscoM.Nome + ", você acaba de nos enviar um formulário de fale conosco. Aqui está a mensagem que você nos deixou! \n"
-                        + faleconoscoM.Mensagem;
-                    email.From = new MailAddress("faleconosco1996@gamil.com");
+                    email.Body = "Olá " + faleconoscoM.Nome + ", você acaba de nos enviar um formulário de fale conosco. Aqui está a mensagem que você nos deixou! \n\n"
+                       +""+ faleconoscoM.Mensagem + "'";
+                    email.From = new MailAddress("faleconosco1996@gmail.com");
                     email.IsBodyHtml = false;
 
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
@@ -239,7 +237,7 @@ namespace Fale_Conosco.Controllers
                     emailVM.Id = email.Id;
                     emailVM.Destinatario = email.Email;
                     emailVM.Assunto = email.Assunto;
-                    //emailVM.Mensagem = "";
+                    emailVM.Mensagem = "";
                     return View(emailVM);
                 }
                 else
@@ -255,10 +253,12 @@ namespace Fale_Conosco.Controllers
 
         //POST: FaleConosco/Email   
         [HttpPost]
-        public IActionResult Email(SMTPVM DadosVM)
+        public async Task<IActionResult> Email(SMTPVM DadosVM)
         {
             if (ModelState.IsValid)
             {
+                var cliente = await _context.FaleConosco.FindAsync(DadosVM.Id);
+
                 var dados = new SMTP();
                 dados.Destinatario = DadosVM.Destinatario;
                 dados.Assunto = DadosVM.Assunto;
@@ -267,8 +267,9 @@ namespace Fale_Conosco.Controllers
                 MailMessage email = new MailMessage();
                 email.To.Add(dados.Destinatario);
                 email.Subject = "[RESPOSTA]: " + dados.Assunto;
-                email.Body = dados.Mensagem;
-                email.From = new MailAddress("faleconosco1996@gamil.com");
+                email.Body = "Olá " + cliente.Nome + ",\n\n"
+                       + "'" + dados.Mensagem + "'"; ;
+                email.From = new MailAddress("faleconosco1996@gmail.com");
                 email.IsBodyHtml = false;
 
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
@@ -279,10 +280,9 @@ namespace Fale_Conosco.Controllers
                 smtpClient.Send(email);
 
                 _context.SMTP.Add(dados);
-                _context.SaveChangesAsync();
+               await _context.SaveChangesAsync();
 
-                ViewBag.email = "Resposta para, " + email.To + ", enviada com sucesso!";
-
+                //ViewBag.email = "Resposta para, " + email.To + ", enviada com sucesso!";
                 return RedirectToAction("Index", "FaleConosco");
             }
             else

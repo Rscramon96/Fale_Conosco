@@ -125,7 +125,8 @@
 @section scripts
     {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-    <script type="text/javascript">
+    <!--MÁSCARAS-->
+    <script>
         $(document).ready(function () {
             $("#CPF").mask('000.000.000-00'), { reverse: true };
             $("#DataNascimento").mask('00/00/0000');
@@ -133,6 +134,7 @@
             $("#CEP").mask('00000-000');
         });
     </script>
+    <!--VALIDAÇÃO CPF-->
     <script>
         $("#CPF").focusout(function () {
             var cpf = $("#CPF").unmask().val();

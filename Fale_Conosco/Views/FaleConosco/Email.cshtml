@@ -33,11 +33,6 @@
                 <input type="submit" value="Enviar" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Voltar para lista</a>
             </div>
-            <h5>@ViewBag.email</h5>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
