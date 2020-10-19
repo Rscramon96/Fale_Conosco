@@ -25,7 +25,6 @@ namespace Fale_Conosco.Controllers
             _context = context;
         }
 
-        // GET: FaleConosco
         public async Task<IActionResult> Index()
         {
             List<FaleConoscoVM> lista = new List<FaleConoscoVM>();
@@ -45,16 +44,9 @@ namespace Fale_Conosco.Controllers
             return View(lista);
         }
 
-        // GET: FaleConosco/Details/5
-        public async Task<IActionResult> Details(FaleConoscoVM DadosVM)
+        public async Task<IActionResult> Details(int Id)
         {
-            if (DadosVM.Id == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == DadosVM.Id);
+                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == Id);
 
                 if (faleConosco == null)
                 {
@@ -84,10 +76,8 @@ namespace Fale_Conosco.Controllers
                     faleconoscoVM.Mensagem = faleConosco.Mensagem;
                     return View(faleconoscoVM);
                 }
-            }
         }
 
-        // GET: FaleConosco/Create
         [AllowAnonymous]
         public IActionResult Create()
         {
@@ -163,16 +153,9 @@ namespace Fale_Conosco.Controllers
             return View(faleConosco);
         }
 
-        // GET: FaleConosco/Delete/5
-        public async Task<IActionResult> Delete(FaleConoscoVM DadosVM)
+        public async Task<IActionResult> Delete(int Id)
         {
-            if (DadosVM.Id == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == DadosVM.Id);
+                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == Id);
 
                 if (faleConosco == null)
                 {
@@ -203,38 +186,31 @@ namespace Fale_Conosco.Controllers
 
                     return View(faleconoscoVM);
                 }
-            }
         }
 
-        // POST: FaleConosco/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(FaleConoscoVM DadosVM)
+        public async Task<IActionResult> DeleteC(FaleConoscoVM DadosVM)
         {
             var faleConosco = await _context.FaleConosco.FindAsync(DadosVM.Id);
 
-            if (faleConosco.Excluir == false)
+            try
             {
                 faleConosco.Excluir = true;
                 _context.FaleConosco.Update(faleConosco);
                 await _context.SaveChangesAsync();
 
-                ViewBag.excluir = faleConosco.Assunto + " excluído com sucesso!";
-
-                return RedirectToAction("Index", "FaleConosco");
+                return Ok();
             }
-            else
+            catch (Exception e)
             {
-                return NotFound();
+                return BadRequest();
             }
         }
 
-        //GET: FaleConosco/Email
-        public async Task<IActionResult> Email(FaleConoscoVM DadosVM)
+        public async Task<IActionResult> Email(int Id)
         {
-            if (DadosVM.Id != null)
-            {
-                var email = await _context.FaleConosco.FindAsync(DadosVM.Id);
+                var email = await _context.FaleConosco.FindAsync(Id);
 
                 if (email != null)
                 {
@@ -249,14 +225,8 @@ namespace Fale_Conosco.Controllers
                 {
                     return NotFound();
                 }
-            }
-            else
-            {
-                return NotFound();
-            }
         }
-
-        //POST: FaleConosco/Email   
+  
         [HttpPost]
         public async Task<IActionResult> Email(SMTPVM DadosVM)
         {
@@ -287,17 +257,12 @@ namespace Fale_Conosco.Controllers
                 _context.SMTP.Add(dados);
                 await _context.SaveChangesAsync();
 
-                //ViewBag.email = "Resposta para, " + email.To + ", enviada com sucesso!";
                 return RedirectToAction("Index", "FaleConosco");
             }
             else
             {
                 return View(DadosVM);
             }
-        }
-        private bool FaleConoscoExists(int id)
-        {
-            return _context.FaleConosco.Any(e => e.Id == id);
         }
     }
 }

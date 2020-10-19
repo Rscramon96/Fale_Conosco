@@ -1,11 +1,12 @@
 ﻿@model Fale_Conosco.ViewModel.FaleConoscoVM
+@Html.AntiForgeryToken()
 
 @{
     ViewData["Title"] = "Excluir";
 }
 
 <h1>Você tem certeza que deseja excluir?</h1>
-<div>
+<div class="col-lg-12">
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -20,6 +21,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Mensagem)
         </dd>
+    </dl>
+    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataCadastro)
         </dt>
@@ -62,6 +65,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sexo)
         </dd>
+    </dl>
+    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CEP)
         </dt>
@@ -106,34 +111,58 @@
         </dd>
     </dl>
 
-    <form id="excluir" asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger" />
+    <div class="form-group">
+        <button onclick="Excluir(@Model.Id)" class="btn btn-danger">Excluir</button>
         <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </form>
+    </div>
+
 </div>
 @section scripts
     {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        $("#excluir").submit(function (funcao) {
-            funcao.preventDefault();
-        var form = $(this).parents("form");
-        swal({
-            icon: "sucess",
-            title: "Excluído com sucesso!",
-            showConfirmButton: false,
-            timer: 1500
-        })
-            //function exclusao (tipo, mensagem) {
-            //    Swal.fire({
-            //        icon: tipo,
-            //        title: mensagem,
-            //        showConfirmButton: false,
-            //        timer: 1500
-            //    })
-            //}
-            //exclusao("sucess", "Exclusão realizada com sucesso!")
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        function Excluir(id) {
+            $.ajax({
+                method: 'POST',
+                url: "@Url.Action("DeleteC","FaleConosco")",
+                data: { __RequestVerificationToken: token, id: id },
+                success: function (data) {
+                    Swal.fire("Excluido", "", "success").then(function () {
+                    window.location = "@Url.Action("Index","FaleConosco")";
+                    });
+                }
+            })
+        }
     </script>
 }
+
+@*function Excluir(id) {
+    swal({
+        title: "Excluir",
+        text: "Deseja excluir o post selecionado?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+        preConfirm: function (value) {
+            return new Promise(function (resolve) {
+                $.ajax({
+                    method: 'POST',
+                    url: "@Url.Action("Excluir", "Posts")",
+                    data: { __RequestVerificationToken: token, id: id },
+                    success: function (data) {
+                    $.fancybox.close();
+                    swal("Post excluido", "", "success").then(function () {
+                    window.location.reload();
+                    });
+                    },
+                    error: function (xhr, status, error) {
+                    $.fancybox.close();
+                    swal("Ocorreu um erro", "Erro ao excluir o post", "error");
+                    }
+                    });
+                    });
+                    }
+                    });
+                    }*@

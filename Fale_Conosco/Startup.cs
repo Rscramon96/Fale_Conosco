@@ -72,6 +72,9 @@ namespace Fale_Conosco
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "FaleConosco",
+                pattern: "Fale-Conosco",
+                defaults: new { controller = "FaleConosco", action = "Create" });
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=FaleConosco}/{action=Create}/{id?}");
