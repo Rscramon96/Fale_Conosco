@@ -74,10 +74,10 @@ namespace Fale_Conosco
             {
                 endpoints.MapControllerRoute(name: "FaleConosco",
                 pattern: "Fale-Conosco",
-                defaults: new { controller = "FaleConosco", action = "Create" });
+                defaults: new { controller = "FaleConosco", action = "Cadastro" });
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=FaleConosco}/{action=Create}/{id?}");
+                    pattern: "{controller=FaleConosco}/{action=Cadastro}/{id?}");
             });
         }
     }

@@ -25,10 +25,10 @@ namespace Fale_Conosco.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Lista()
         {
             List<FaleConoscoVM> lista = new List<FaleConoscoVM>();
-            var faleconoscoM = await _context.FaleConosco.Where(x => !x.Excluir).ToListAsync();
+            var faleconoscoM = _context.FaleConosco.Where(x => !x.Excluir).ToList();
 
             foreach (var item in faleconoscoM)
             {
@@ -44,9 +44,9 @@ namespace Fale_Conosco.Controllers
             return View(lista);
         }
 
-        public async Task<IActionResult> Details(int Id)
+        public IActionResult Detalhes(int Id)
         {
-                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == Id);
+                var faleConosco = _context.FaleConosco.Find(Id);
 
                 if (faleConosco == null)
                 {
@@ -79,7 +79,7 @@ namespace Fale_Conosco.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Create()
+        public IActionResult Cadastro()
         {
             var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
             ViewBag.Estado = new SelectList(Estados, "Id", "Nome");
@@ -93,7 +93,7 @@ namespace Fale_Conosco.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataCadastro,Excluir,Nome,DataNascimento,CPF,Email,Celular,Sexo,CEP,Rua,Numero,Complemento,Bairro,Cidade,Estado,Assunto,Mensagem")] FaleConoscoVM faleConosco)
+        public IActionResult Cadastro([Bind("Id,DataCadastro,Excluir,Nome,DataNascimento,CPF,Email,Celular,Sexo,CEP,Rua,Numero,Complemento,Bairro,Cidade,Estado,Assunto,Mensagem")] FaleConoscoVM faleConosco)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +123,7 @@ namespace Fale_Conosco.Controllers
                 if (ModelState.IsValid && faleconoscoM.Excluir == false)
                 {
                     _context.Add(faleconoscoM);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
 
                     MailMessage email = new MailMessage();
                     email.To.Add(faleconoscoM.Email);
@@ -142,7 +142,7 @@ namespace Fale_Conosco.Controllers
 
                     ViewBag.cadastro = "Cadastro realizado com sucesso! \n Confira seu e-mail!";
 
-                    return RedirectToAction("Create", "FaleConosco");
+                    return RedirectToAction("Cadastro", "FaleConosco");
                 }
             }
             var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
@@ -150,12 +150,13 @@ namespace Fale_Conosco.Controllers
 
             var Sexo = from Sexo x in Enum.GetValues(typeof(Sexo)) select new { Id = x, Nome = x.ToString() };
             ViewBag.Sexo = new SelectList(Sexo, "Id", "Nome");
+
             return View(faleConosco);
         }
 
-        public async Task<IActionResult> Delete(int Id)
+        public IActionResult Excluir(int Id)
         {
-                var faleConosco = await _context.FaleConosco.FirstOrDefaultAsync(m => m.Id == Id);
+                var faleConosco = _context.FaleConosco.Find(Id);
 
                 if (faleConosco == null)
                 {
@@ -190,15 +191,15 @@ namespace Fale_Conosco.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteC(FaleConoscoVM DadosVM)
+        public IActionResult Excluir(FaleConoscoVM DadosVM)
         {
-            var faleConosco = await _context.FaleConosco.FindAsync(DadosVM.Id);
+            var faleConosco = _context.FaleConosco.Find(DadosVM.Id);
 
             try
             {
                 faleConosco.Excluir = true;
                 _context.FaleConosco.Update(faleConosco);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 return Ok();
             }
@@ -208,9 +209,9 @@ namespace Fale_Conosco.Controllers
             }
         }
 
-        public async Task<IActionResult> Email(int Id)
+        public IActionResult Email(int Id)
         {
-                var email = await _context.FaleConosco.FindAsync(Id);
+                var email = _context.FaleConosco.Find(Id);
 
                 if (email != null)
                 {
@@ -228,11 +229,12 @@ namespace Fale_Conosco.Controllers
         }
   
         [HttpPost]
-        public async Task<IActionResult> Email(SMTPVM DadosVM)
+        [ValidateAntiForgeryToken]
+        public IActionResult Email(SMTPVM DadosVM)
         {
             if (ModelState.IsValid)
             {
-                var cliente = await _context.FaleConosco.FindAsync(DadosVM.Id);
+                var cliente = _context.FaleConosco.Find(DadosVM.Id);
 
                 var dados = new SMTP();
                 dados.Destinatario = DadosVM.Destinatario;
@@ -255,9 +257,9 @@ namespace Fale_Conosco.Controllers
                 smtpClient.Send(email);
 
                 _context.SMTP.Add(dados);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
-                return RedirectToAction("Index", "FaleConosco");
+                return RedirectToAction("Lista", "FaleConosco");
             }
             else
             {

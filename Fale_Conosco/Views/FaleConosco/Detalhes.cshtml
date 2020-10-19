@@ -1,12 +1,12 @@
 ﻿@model Fale_Conosco.ViewModel.FaleConoscoVM
-@Html.AntiForgeryToken()
 
 @{
-    ViewData["Title"] = "Excluir";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Você tem certeza que deseja excluir?</h1>
-<div class="col-lg-12">
+<h1>Detalhes</h1>
+
+<div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -21,8 +21,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Mensagem)
         </dd>
-    </dl>
-    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataCadastro)
         </dt>
@@ -65,8 +63,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sexo)
         </dd>
-    </dl>
-    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CEP)
         </dt>
@@ -110,59 +106,8 @@
             @Html.DisplayFor(model => model.Estado)
         </dd>
     </dl>
-
-    <div class="form-group">
-        <button onclick="Excluir(@Model.Id)" class="btn btn-danger">Excluir</button>
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-
 </div>
-@section scripts
-    {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        function Excluir(id) {
-            $.ajax({
-                method: 'POST',
-                url: "@Url.Action("DeleteC","FaleConosco")",
-                data: { __RequestVerificationToken: token, id: id },
-                success: function (data) {
-                    Swal.fire("Excluido", "", "success").then(function () {
-                    window.location = "@Url.Action("Index","FaleConosco")";
-                    });
-                }
-            })
-        }
-    </script>
-}
-
-@*function Excluir(id) {
-    swal({
-        title: "Excluir",
-        text: "Deseja excluir o post selecionado?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sim",
-        cancelButtonText: "Não",
-        preConfirm: function (value) {
-            return new Promise(function (resolve) {
-                $.ajax({
-                    method: 'POST',
-                    url: "@Url.Action("Excluir", "Posts")",
-                    data: { __RequestVerificationToken: token, id: id },
-                    success: function (data) {
-                    $.fancybox.close();
-                    swal("Post excluido", "", "success").then(function () {
-                    window.location.reload();
-                    });
-                    },
-                    error: function (xhr, status, error) {
-                    $.fancybox.close();
-                    swal("Ocorreu um erro", "Erro ao excluir o post", "error");
-                    }
-                    });
-                    });
-                    }
-                    });
-                    }*@
+<div>
+    <a asp-action="Email" asp-route-Id="@Model.Id" class="btn btn-primary">Responder</a> |
+    <a asp-action="Lista" class="btn btn-secondary">Voltar</a>
+</div>

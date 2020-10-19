@@ -54,8 +54,8 @@
                     @Html.DisplayFor(modelItem => item.Assunto)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-Id="@item.Id" class="btn btn-info">Ver</a> |
-                    <a asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger">Excluir</a>
+                    <a asp-action="Detalhes" asp-route-Id="@item.Id" class="btn btn-info">Ver</a> |
+                    <a asp-action="Excluir" asp-route-Id="@item.Id" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
         }
