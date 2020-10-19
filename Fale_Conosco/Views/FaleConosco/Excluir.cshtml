@@ -128,7 +128,7 @@
                 url: "@Url.Action("Excluir","FaleConosco")",
                 data: { __RequestVerificationToken: token, id: id },
                 success: function (data) {
-                    Swal.fire("Excluido", "", "success").then(function () {
+                    Swal.fire("Excluido com sucesso!!!", "", "success").then(function () {
                     window.location = "@Url.Action("Lista","FaleConosco")";
                     });
                 }
@@ -136,33 +136,3 @@
         }
     </script>
 }
-
-@*function Excluir(id) {
-    swal({
-        title: "Excluir",
-        text: "Deseja excluir o post selecionado?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sim",
-        cancelButtonText: "Não",
-        preConfirm: function (value) {
-            return new Promise(function (resolve) {
-                $.ajax({
-                    method: 'POST',
-                    url: "@Url.Action("Excluir", "Posts")",
-                    data: { __RequestVerificationToken: token, id: id },
-                    success: function (data) {
-                    $.fancybox.close();
-                    swal("Post excluido", "", "success").then(function () {
-                    window.location.reload();
-                    });
-                    },
-                    error: function (xhr, status, error) {
-                    $.fancybox.close();
-                    swal("Ocorreu um erro", "Erro ao excluir o post", "error");
-                    }
-                    });
-                    });
-                    }
-                    });
-                    }*@

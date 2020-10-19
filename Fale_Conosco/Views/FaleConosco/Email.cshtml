@@ -25,14 +25,34 @@
             <hr />
             <div class="col-lg">
                 <label asp-for="Mensagem" class="control-label"></label>
-                <textarea asp-for="Mensagem" class="form-control" ></textarea>
+                <textarea asp-for="Mensagem" class="form-control"></textarea>
                 <span asp-validation-for="Mensagem" class="text-danger"></span>
             </div>
             <hr />
             <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-                <a asp-action="Lista" class="btn btn-secondary">Voltar para lista</a>
+                <button onclick="Enviar(@Model.Id)" class="btn btn-primary">Enviar</button>
+                <a asp-action="Lista" class="btn btn-secondary">Lista</a>
             </div>
         </form>
     </div>
 </div>
+@section scripts
+    {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        function Enviar(Id) {
+            $.ajax({
+                method: 'POST',
+                url: "@Url.Action("Email","FaleConosco")",
+                data: { __RequestVerificationToken: token, Id: Id },
+                success: function (data) {
+                    Swal.fire("Resposta enviada com sucesso!!!", "", "success").then(function () {
+                    window.location = "@Url.Action("Lista","FaleConosco")";
+                    });
+                    window.location = "@Url.Action("Lista","FaleConosco")";
+                }
+            })
+        }
+    </script>
+}

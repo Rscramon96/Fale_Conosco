@@ -116,7 +116,7 @@
 
             <div class="form-group">
                 @Html.AntiForgeryToken()
-                <input type="submit" value="Enviar" class="btn btn-primary" />
+                <button onclick="Enviar(@Model)" class="btn btn-primary">Enviar</button>
             </div>
         </form>
     </div>
@@ -168,6 +168,22 @@
                 return false;
             }
             return true;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        function Enviar(Model) {
+            $.ajax({
+                method: 'POST',
+                url: "@Url.Action("Cadastro","FaleConosco")",
+                data: { __RequestVerificationToken: token, Model: Model },
+                success: function (data) {
+                    Swal.fire("Cadastro realizado com sucesso!!!", "Verifique em seu E-mail!", "success").then(function () {
+                        window.location.reload();
+                    });
+                }
+            })
         }
     </script>
 }

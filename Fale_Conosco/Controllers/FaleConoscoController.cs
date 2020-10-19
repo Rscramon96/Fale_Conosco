@@ -140,9 +140,7 @@ namespace Fale_Conosco.Controllers
                     smtpClient.Credentials = new System.Net.NetworkCredential("faleconosco1996@gmail.com", "Teste@123");
                     smtpClient.Send(email);
 
-                    ViewBag.cadastro = "Cadastro realizado com sucesso! \n Confira seu e-mail!";
-
-                    return RedirectToAction("Cadastro", "FaleConosco");
+                    return Ok();
                 }
             }
             var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
@@ -259,7 +257,7 @@ namespace Fale_Conosco.Controllers
                 _context.SMTP.Add(dados);
                 _context.SaveChanges();
 
-                return RedirectToAction("Lista", "FaleConosco");
+                return Ok();
             }
             else
             {
