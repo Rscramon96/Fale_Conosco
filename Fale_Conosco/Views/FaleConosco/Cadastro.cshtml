@@ -11,7 +11,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-11">
         <!--FORMULÁRIO-->
-        <form asp-action="Cadastro">
+        <form asp-action="Cadastro" id="Cadastro">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="text-left">
@@ -116,7 +116,7 @@
 
             <div class="form-group">
                 @Html.AntiForgeryToken()
-                <button onclick="Enviar(@Model)" class="btn btn-primary">Enviar</button>
+                <button id="botao" class="btn btn-primary">Enviar</button>
             </div>
         </form>
     </div>
@@ -172,18 +172,24 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        function Enviar(Model) {
+        $('#Cadastro').submit(function (e) {
+            e.preventDefault();
+            $('#botao').attr('disabled','disabled');
             $.ajax({
                 method: 'POST',
                 url: "@Url.Action("Cadastro","FaleConosco")",
-                data: { __RequestVerificationToken: token, Model: Model },
+                data: $('#Cadastro').serialize(),
                 success: function (data) {
                     Swal.fire("Cadastro realizado com sucesso!!!", "", "success").then(function () {
                         window.location.reload();
                     });
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire("Ocorreu um erro.", xhr.responseText, "error");
+                    $('#botao').removeAttr('disabled');
                 }
             })
-        }
+        });
+
     </script>
 }

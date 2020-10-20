@@ -46,36 +46,36 @@ namespace Fale_Conosco.Controllers
 
         public IActionResult Detalhes(int Id)
         {
-                var faleConosco = _context.FaleConosco.Find(Id);
+            var faleConosco = _context.FaleConosco.Find(Id);
 
-                if (faleConosco == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    var faleconoscoVM = new FaleConoscoVM();
+            if (faleConosco == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var faleconoscoVM = new FaleConoscoVM();
 
-                    faleconoscoVM.Id = faleConosco.Id;
-                    faleconoscoVM.DataCadastro = faleConosco.DataCadastro;
-                    faleconoscoVM.Excluir = faleConosco.Excluir;
-                    faleconoscoVM.Nome = faleConosco.Nome;
-                    faleconoscoVM.DataNascimento = faleConosco.DataNascimento;
-                    faleconoscoVM.CPF = faleConosco.CPF;
-                    faleconoscoVM.Email = faleConosco.Email;
-                    faleconoscoVM.Celular = faleConosco.Celular;
-                    faleconoscoVM.Sexo = faleConosco.Sexo;
-                    faleconoscoVM.CEP = faleConosco.CEP;
-                    faleconoscoVM.Rua = faleConosco.Rua;
-                    faleconoscoVM.Numero = faleConosco.Numero;
-                    faleconoscoVM.Complemento = faleConosco.Complemento;
-                    faleconoscoVM.Bairro = faleConosco.Bairro;
-                    faleconoscoVM.Cidade = faleConosco.Cidade;
-                    faleconoscoVM.Estado = faleConosco.Estado;
-                    faleconoscoVM.Assunto = faleConosco.Assunto;
-                    faleconoscoVM.Mensagem = faleConosco.Mensagem;
-                    return View(faleconoscoVM);
-                }
+                faleconoscoVM.Id = faleConosco.Id;
+                faleconoscoVM.DataCadastro = faleConosco.DataCadastro;
+                faleconoscoVM.Excluir = faleConosco.Excluir;
+                faleconoscoVM.Nome = faleConosco.Nome;
+                faleconoscoVM.DataNascimento = faleConosco.DataNascimento;
+                faleconoscoVM.CPF = faleConosco.CPF;
+                faleconoscoVM.Email = faleConosco.Email;
+                faleconoscoVM.Celular = faleConosco.Celular;
+                faleconoscoVM.Sexo = faleConosco.Sexo;
+                faleconoscoVM.CEP = faleConosco.CEP;
+                faleconoscoVM.Rua = faleConosco.Rua;
+                faleconoscoVM.Numero = faleConosco.Numero;
+                faleconoscoVM.Complemento = faleConosco.Complemento;
+                faleconoscoVM.Bairro = faleConosco.Bairro;
+                faleconoscoVM.Cidade = faleConosco.Cidade;
+                faleconoscoVM.Estado = faleConosco.Estado;
+                faleconoscoVM.Assunto = faleConosco.Assunto;
+                faleconoscoVM.Mensagem = faleConosco.Mensagem;
+                return View(faleconoscoVM);
+            }
         }
 
         [AllowAnonymous]
@@ -93,10 +93,15 @@ namespace Fale_Conosco.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Cadastro([Bind("Id,DataCadastro,Excluir,Nome,DataNascimento,CPF,Email,Celular,Sexo,CEP,Rua,Numero,Complemento,Bairro,Cidade,Estado,Assunto,Mensagem")] FaleConoscoVM faleConosco)
+        public IActionResult Cadastro(FaleConoscoVM faleConosco)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception();
+                }
+
                 faleConosco.DataCadastro = DateTime.Now;
 
                 var faleconoscoM = new FaleConosco();
@@ -120,71 +125,71 @@ namespace Fale_Conosco.Controllers
                 faleconoscoM.Assunto = faleConosco.Assunto;
                 faleconoscoM.Mensagem = faleConosco.Mensagem;
 
-                if (ModelState.IsValid && faleconoscoM.Excluir == false)
-                {
-                    _context.Add(faleconoscoM);
-                    _context.SaveChanges();
+                _context.Add(faleconoscoM);
+                _context.SaveChanges();
 
-                    MailMessage email = new MailMessage();
-                    email.To.Add(faleconoscoM.Email);
-                    email.Subject = "[FALE-CONOSCO]: " + faleconoscoM.Assunto;
-                    email.Body = "Olá " + faleconoscoM.Nome + ", você acaba de nos enviar um formulário de fale conosco. Aqui está a mensagem que você nos deixou! \n\n"
-                       + "" + faleconoscoM.Mensagem + "'";
-                    email.From = new MailAddress("faleconosco1996@gmail.com");
-                    email.IsBodyHtml = false;
+                MailMessage email = new MailMessage();
+                email.To.Add(faleconoscoM.Email);
+                email.Subject = "[FALE-CONOSCO]: " + faleconoscoM.Assunto;
+                email.Body = "Olá " + faleconoscoM.Nome + ", você acaba de nos enviar um formulário de fale conosco. Aqui está a mensagem que você nos deixou! \n\n"
+                   + "" + faleconoscoM.Mensagem + "'";
+                email.From = new MailAddress("faleconosco1996@gmail.com");
+                email.IsBodyHtml = false;
 
-                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
-                    smtpClient.Port = 587;
-                    smtpClient.UseDefaultCredentials = true;
-                    smtpClient.EnableSsl = true;
-                    smtpClient.Credentials = new System.Net.NetworkCredential("faleconosco1996@gmail.com", "Teste@123");
-                    smtpClient.Send(email);
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = true;
+                smtpClient.EnableSsl = true;
+                smtpClient.Credentials = new System.Net.NetworkCredential("faleconosco1996@gmail.com", "Teste@123");
+                smtpClient.Send(email);
 
-                    return Ok();
-                }
+                return Ok();
             }
-            var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
-            ViewBag.Estado = new SelectList(Estados, "Id", "Nome");
+            catch (Exception e)
+            {
+                var Estados = from Estado x in Enum.GetValues(typeof(Estado)) select new { Id = x, Nome = x.ToString() };
+                ViewBag.Estado = new SelectList(Estados, "Id", "Nome");
 
-            var Sexo = from Sexo x in Enum.GetValues(typeof(Sexo)) select new { Id = x, Nome = x.ToString() };
-            ViewBag.Sexo = new SelectList(Sexo, "Id", "Nome");
+                var Sexo = from Sexo x in Enum.GetValues(typeof(Sexo)) select new { Id = x, Nome = x.ToString() };
+                ViewBag.Sexo = new SelectList(Sexo, "Id", "Nome");
 
-            return View(faleConosco);
+                return BadRequest(ModelState);
+            }
         }
 
         public IActionResult Excluir(int Id)
         {
-                var faleConosco = _context.FaleConosco.Find(Id);
+            var faleConosco = _context.FaleConosco.Find(Id);
 
-                if (faleConosco == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    var faleconoscoVM = new FaleConoscoVM();
+            if (faleConosco == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var faleconoscoVM = new FaleConoscoVM();
 
-                    faleconoscoVM.Id = faleConosco.Id;
-                    faleconoscoVM.DataCadastro = faleConosco.DataCadastro;
-                    faleconoscoVM.Excluir = faleConosco.Excluir;
-                    faleconoscoVM.Nome = faleConosco.Nome;
-                    faleconoscoVM.DataNascimento = faleConosco.DataNascimento;
-                    faleconoscoVM.CPF = faleConosco.CPF;
-                    faleconoscoVM.Email = faleConosco.Email;
-                    faleconoscoVM.Celular = faleConosco.Celular;
-                    faleconoscoVM.Sexo = faleConosco.Sexo;
-                    faleconoscoVM.CEP = faleConosco.CEP;
-                    faleconoscoVM.Rua = faleConosco.Rua;
-                    faleconoscoVM.Numero = faleConosco.Numero;
-                    faleconoscoVM.Complemento = faleConosco.Complemento;
-                    faleconoscoVM.Bairro = faleConosco.Bairro;
-                    faleconoscoVM.Cidade = faleConosco.Cidade;
-                    faleconoscoVM.Estado = faleConosco.Estado;
-                    faleconoscoVM.Assunto = faleConosco.Assunto;
-                    faleconoscoVM.Mensagem = faleConosco.Mensagem;
+                faleconoscoVM.Id = faleConosco.Id;
+                faleconoscoVM.DataCadastro = faleConosco.DataCadastro;
+                faleconoscoVM.Excluir = faleConosco.Excluir;
+                faleconoscoVM.Nome = faleConosco.Nome;
+                faleconoscoVM.DataNascimento = faleConosco.DataNascimento;
+                faleconoscoVM.CPF = faleConosco.CPF;
+                faleconoscoVM.Email = faleConosco.Email;
+                faleconoscoVM.Celular = faleConosco.Celular;
+                faleconoscoVM.Sexo = faleConosco.Sexo;
+                faleconoscoVM.CEP = faleConosco.CEP;
+                faleconoscoVM.Rua = faleConosco.Rua;
+                faleconoscoVM.Numero = faleConosco.Numero;
+                faleconoscoVM.Complemento = faleConosco.Complemento;
+                faleconoscoVM.Bairro = faleConosco.Bairro;
+                faleconoscoVM.Cidade = faleConosco.Cidade;
+                faleconoscoVM.Estado = faleConosco.Estado;
+                faleconoscoVM.Assunto = faleConosco.Assunto;
+                faleconoscoVM.Mensagem = faleConosco.Mensagem;
 
-                    return View(faleconoscoVM);
-                }
+                return View(faleconoscoVM);
+            }
         }
 
         [HttpPost]
@@ -209,23 +214,23 @@ namespace Fale_Conosco.Controllers
 
         public IActionResult Email(int Id)
         {
-                var email = _context.FaleConosco.Find(Id);
+            var email = _context.FaleConosco.Find(Id);
 
-                if (email != null)
-                {
-                    var emailVM = new SMTPVM();
-                    emailVM.Id = email.Id;
-                    emailVM.Destinatario = email.Email;
-                    emailVM.Assunto = email.Assunto;
-                    emailVM.Mensagem = "";
-                    return View(emailVM);
-                }
-                else
-                {
-                    return NotFound();
-                }
+            if (email != null)
+            {
+                var emailVM = new SMTPVM();
+                emailVM.Id = email.Id;
+                emailVM.Destinatario = email.Email;
+                emailVM.Assunto = email.Assunto;
+                emailVM.Mensagem = "";
+                return View(emailVM);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
-  
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Email(SMTPVM DadosVM)
