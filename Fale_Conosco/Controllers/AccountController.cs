@@ -43,8 +43,7 @@ namespace Fale_Conosco.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, viewModel.Senha, viewModel.LembrarMe, false);
                 if (!result.Succeeded) throw new Exception();
                 {
-                    //ViewBag.Sucesso = "Sucesso";
-                    return RedirectToAction("Index", "FaleConosco");
+                    return RedirectToAction("Lista", "FaleConosco");
                 }
             }
             catch (Exception e)

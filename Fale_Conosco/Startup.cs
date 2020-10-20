@@ -73,8 +73,25 @@ namespace Fale_Conosco
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(name: "FaleConosco",
-                pattern: "Fale-Conosco",
-                defaults: new { controller = "FaleConosco", action = "Cadastro" });
+                    pattern: "Fale-Conosco",
+                    defaults: new { controller = "FaleConosco", action = "Cadastro" });
+
+                endpoints.MapControllerRoute(name: "FaleConosco",
+                    pattern: "Admin/Fale-Conosco",
+                    defaults: new { controller = "FaleConosco", action = "Lista" });
+
+                endpoints.MapControllerRoute(name: "FaleConosco",
+                    pattern: "Admin/Fale-Conosco/Detalhes",
+                    defaults: new { controller = "FaleConosco", action = "Detalhes" });
+
+                endpoints.MapControllerRoute(name: "FaleConosco",
+                    pattern: "Admin/Fale-Conosco/Responder",
+                    defaults: new { controller = "FaleConosco", action = "Email" });
+
+                endpoints.MapControllerRoute(name: "FaleConosco",
+                    pattern: "Admin/Fale-Conosco/Excluir",
+                    defaults: new { controller = "FaleConosco", action = "Excluir" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=FaleConosco}/{action=Cadastro}/{id?}");

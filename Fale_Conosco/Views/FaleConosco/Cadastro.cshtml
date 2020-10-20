@@ -179,7 +179,7 @@
                 url: "@Url.Action("Cadastro","FaleConosco")",
                 data: { __RequestVerificationToken: token, Model: Model },
                 success: function (data) {
-                    Swal.fire("Cadastro realizado com sucesso!!!", "Verifique em seu E-mail!", "success").then(function () {
+                    Swal.fire("Cadastro realizado com sucesso!!!", "", "success").then(function () {
                         window.location.reload();
                     });
                 }

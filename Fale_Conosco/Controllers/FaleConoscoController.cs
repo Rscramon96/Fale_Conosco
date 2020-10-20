@@ -242,7 +242,7 @@ namespace Fale_Conosco.Controllers
                 MailMessage email = new MailMessage();
                 email.To.Add(dados.Destinatario);
                 email.Subject = "[RESPOSTA]: " + dados.Assunto;
-                email.Body = "Olá " + cliente.Nome + ",\n\n"
+                email.Body = "Olá,\n\n"
                        + "'" + dados.Mensagem + "'"; ;
                 email.From = new MailAddress("faleconosco1996@gmail.com");
                 email.IsBodyHtml = false;
